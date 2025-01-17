@@ -20,7 +20,7 @@ private:
     int grade;
     vector<Subject> subjects;
     float attendance_percentage = 0;
-    vector<int> marks_per_subject;
+    vector<float> marks_per_subject;
 public:
 	// Default constructor
 	Student();

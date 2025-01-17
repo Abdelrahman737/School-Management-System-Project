@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include "Subject.hpp"
 
 using namespace std;
 
@@ -21,7 +22,7 @@ public:
 	~Students();
 
 	//add a new student
-	void add_student(string name, int id, int age, int grade, string gender, int phone_number);
+	void add_student(Student my_student);
 
 	//display the information of a specific student
 	void display_student_info(string name);
@@ -39,7 +40,7 @@ public:
 	void set_attendance_percentage(string name, float attendance_percentage);
 
 	//Set the marks of a student
-	void set_marks(string name, vector<int> marks);
+	void set_marks(string name, vector<float> marks);
 
 	//save the information of all the students to a txt file
 	void save_students();
@@ -54,7 +55,16 @@ public:
 	void merge_sort(vector<Student>& students, int left, int right);
 
 	//Binary search function for the students by name
-	int binary_search(vector<Student>& students, string name, int left, int right);
+	int binary_search_by_name(vector<Student>& students, string name, int left, int right);
+
+	//Binary search function for the students by id
+	int binary_search_by_id(vector<Student>& students, int id, int left, int right);
+	
+	int get_length();
+
+	vector<Student> get_dataset();
+
+	vector<Subject> get_subjects(Student my_student);
 };
 
 #endif

@@ -19,6 +19,11 @@ Subject::Subject(string name, float credit_hours)
 
 }
 
+string Subject::get_name()
+{
+	return name;
+}
+
 //destructor
 Subject::~Subject()
 {

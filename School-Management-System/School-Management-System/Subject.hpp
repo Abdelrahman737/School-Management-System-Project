@@ -30,6 +30,8 @@ public:
     // Overloaded constructor
     Subject(string name, float credit_hours);
 
+    string get_name();
+
     // Destructor
     ~Subject();
 };

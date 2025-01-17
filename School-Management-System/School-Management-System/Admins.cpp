@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include <iomanip>
+#include <iomanip> //We are using this for setw, to organize the data represented using display_all function
+#include <string>
 #include <vector>
 #include "Admins.hpp"
 
@@ -271,11 +272,11 @@ void Admins::display_all_admins() const
     * If the value is longer than the width, it is displayed fully
 	*/
 	cout << "---------------------------------------------------------------------------------------------------------------" << endl;
-	cout << setw(5) << "ID" << setw(15) << "Name" << setw(5) << "Age" << setw(10) << "Gender" << setw(15) << "Phone Number" << setw(15) << "Username" << endl;
+	cout << left << setw(5) << "ID" << setw(20) << "Name" << setw(5) << "Age" << setw(10) << "Gender" << setw(15) << "Phone Number" << setw(15) << "Username" << endl;
 	cout << "---------------------------------------------------------------------------------------------------------------" << endl;
 	for (int i{ 0 }; i < admins.size(); i++)
 	{
-		cout << setw(5) << admins.at(i).id << setw(15) << admins.at(i).name << setw(5) << admins.at(i).age << setw(10) << admins.at(i).gender << setw(15) << admins.at(i).phone_number << setw(15) << admins.at(i).username << endl;
+		cout << left << setw(5) << admins.at(i).id << setw(20) << admins.at(i).name << setw(5) << admins.at(i).age << setw(10) << admins.at(i).gender << setw(15) << admins.at(i).phone_number << setw(15) << admins.at(i).username << endl;
 	}
 }
 
@@ -330,7 +331,7 @@ void Admins::save_admins()
 		for (int i{ 0 }; i < admins.size(); i++)
 		{
 			file << admins.at(i).id << " "
-				 << admins.at(i).name << " "
+				 << admins.at(i).name << ", "
 				 << admins.at(i).age << " "
 				 << admins.at(i).gender << " "
 				 << admins.at(i).phone_number << " "
@@ -370,7 +371,14 @@ void Admins::load_admins()
 		can read valid data, then --> condition is true
 		If the reading action stopped or it cannot read valid data, then --> condition is false
 		*/
-		while (file >> id >> name >> age >> gender >> phone_number >> username >> password)
+		/*
+		* the ws is used to ignore any whitespaces before the name attribute
+		* getline is used to take the full name inserted because it will include some spaces
+		* if we used cin it will behave in incorrect way
+		* getline takes three arguments file which is the source of the data, name is the variable that will store the data comming from the file and third argument is the delimeter which is the ','
+		* when the getline face the ',' it will stop storing inside name variable
+		*/
+		while (file >> id >> ws && getline(file, name, ',') >> age >> gender >> phone_number >> username >> password)
 		{
 			Admin admin(id, name, age, gender, phone_number, username, password);
 			admins.push_back(admin);

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <string>
 #include "Students.hpp"
 #include "Student.hpp"
 #include "Subject.hpp"
@@ -130,7 +131,7 @@ Explanation how this work in details :
 6. The function is called recursively until the left index is smaller than the right index.
 7. If the name is not found, the function returns -1.
 */
-int Students::binary_search(vector<Student>& students, string name, int left, int right)
+int Students::binary_search_by_name(vector<Student>& students, string name, int left, int right)
 {
 	while (left <= right)
 	{
@@ -159,13 +160,41 @@ int Students::binary_search(vector<Student>& students, string name, int left, in
 	return -1;
 }
 
+int Students::binary_search_by_id(vector<Student>& students, int id, int left, int right)
+{
+	while (left <= right)
+	{
+		//Get the middle of the array
+		int middle = left + (right - left) / 2;
+
+		// Check if the name is present at the middle
+		if (students.at(middle).id == id)
+		{
+			return middle;
+		}
+
+		// If the name is greater, ignore the left half
+		if (students.at(middle).id < id)
+		{
+			left = middle + 1;
+		}
+		// If the name is smaller, ignore the right half
+		else
+		{
+			right = middle - 1;
+		}
+	}
+
+	// Name not found
+	return -1;
+}
 
 //===========================================Functions for the students=========================================
 
 //add a new student
-void Students::add_student(string name, int id, int age, int grade, string gender, int phone_number)
+void Students::add_student(Student my_student)
 {
-	Student student{id, name, age, gender, phone_number, grade};
+	Student student{my_student};
 
 	students.push_back(student);
 
@@ -175,7 +204,7 @@ void Students::add_student(string name, int id, int age, int grade, string gende
 //display the information of a specific student
 void Students::display_student_info(string name)
 {
-	int index = binary_search(students, name, 0, students.size() - 1);
+	int index = binary_search_by_name(students, name, 0, students.size() - 1);
 	if (index == -1)
 	{
 		cout << "The student is not found!" << endl;
@@ -201,7 +230,7 @@ void Students::display_all_students()
 //remove a student
 void Students::remove_student(string name)
 {
-	int index = binary_search(students, name, 0, students.size() - 1);
+	int index = binary_search_by_name(students, name, 0, students.size() - 1);
 	if (index == -1)
 	{
 		cout << "The student is not found!" << endl;
@@ -217,7 +246,7 @@ void Students::remove_student(string name)
 //edit the information of a student
 void Students::edit_student_info(string search_input, string name, int id, int age, int grade, string gender, int phone_number)
 {
-	int index = binary_search(students, search_input, 0, students.size() - 1);
+	int index = binary_search_by_name(students, search_input, 0, students.size() - 1);
 	if (index == -1)
 	{
 		cout << "The student is not found!" << endl;
@@ -244,7 +273,7 @@ void Students::save_students()
 		for (int i{ 0 }; i < students.size(); i++)
 		{
 			file << students.at(i).id << " " 
-				 << students.at(i).name << " " 
+				 << students.at(i).name << ", " 
 				 << students.at(i).age << " " 
 				 << students.at(i).gender << " " 
 				 << students.at(i).phone_number << " " 
@@ -273,58 +302,63 @@ void Students::save_students()
 //load the information of all the students from a txt file
 void Students::load_students()
 {
-	ifstream file;
-	file.open("students.txt");
+	ifstream file("students.txt");
 	if (file.is_open())
 	{
 		students.clear();
 
-		while (!file.eof())
+		int id;
+		string name;
+		int age;
+		string gender;
+		int phone_number;
+		int grade;
+		float attendance_percentage;
+		vector<float> marks_per_subject;
+
+		/*
+		This condition means that while the reading action from the file is correct and the variables
+		can read valid data, then --> condition is true
+		If the reading action stopped or it cannot read valid data, then --> condition is false
+		*/
+		/*
+		* the ws is used to ignore any whitespaces before the name attribute
+		* getline is used to take the full name inserted because it will include some spaces
+		* if we used cin it will behave in incorrect way
+		* getline takes three arguments file which is the source of the data, name is the variable that will store the data coming from the file and third argument is the delimiter which is the ','
+		* when the getline face the ',' it will stop storing inside name variable
+		*/
+		while (file >> id >> ws && getline(file, name, ',') >> age >> gender >> phone_number >> grade >> attendance_percentage)
 		{
-			int id;
-			string name;
-			int age;
-			string gender;
-			int phone_number;
-			int grade;
-			float attendance_percentage;
-			vector<int> marks_per_subject;
-
-			file >> id >> name >> age >> gender >> phone_number >> grade >> attendance_percentage;
-
 			Student student(id, name, age, gender, phone_number, grade);
+			student.attendance_percentage = attendance_percentage;
 
-			for (int i{ 0 }; i < student.subjects.size(); i++)
+			marks_per_subject.clear();
+			for (int i = 0; i < student.subjects.size(); i++)
 			{
 				int marks;
 				file >> marks;
 				marks_per_subject.push_back(marks);
 			}
 
-			student.attendance_percentage = attendance_percentage;
-
-			for (int i {0}; i < student.subjects.size(); i++)
-			{
-				student.marks_per_subject.push_back(marks_per_subject.at(i));
-			}
-
+			student.marks_per_subject = marks_per_subject;
 			students.push_back(student);
 		}
 
 		file.close();
-
-		cout << "Admins information loaded successfully!" << endl;
+		cout << "Students information loaded successfully!" << endl;
 	}
 	else
 	{
-		cout << "The file could not be opened!" << endl;
+		throw invalid_argument("File does not exist!");
 	}
 }
+
 
 //Set the attendance percentage of a student
 void Students::set_attendance_percentage(string name, float attendance_percentage)
 {
-	int index = binary_search(students, name, 0, students.size() - 1);
+	int index = binary_search_by_name(students, name, 0, students.size() - 1);
 	if (index == -1)
 	{
 		cout << "The student is not found!" << endl;
@@ -337,9 +371,9 @@ void Students::set_attendance_percentage(string name, float attendance_percentag
 }
 
 //Set the marks of a student
-void Students::set_marks(string name, vector<int> marks)
+void Students::set_marks(string name, vector<float> marks)
 {
-	int index = binary_search(students, name, 0, students.size() - 1);
+	int index = binary_search_by_name(students, name, 0, students.size() - 1);
 	if (index == -1)
 	{
 		cout << "The student is not found!" << endl;
@@ -347,6 +381,20 @@ void Students::set_marks(string name, vector<int> marks)
 	else
 	{
 		students.at(index).marks_per_subject = marks;
-		cout << "The marks were set successfully!" << endl;
 	}
+}
+
+int Students::get_length()
+{
+	return students.size();
+}
+
+vector<Student> Students::get_dataset()
+{
+	return students;
+}
+
+vector<Subject> Students::get_subjects(Student my_student)
+{
+	return my_student.subjects;
 }
