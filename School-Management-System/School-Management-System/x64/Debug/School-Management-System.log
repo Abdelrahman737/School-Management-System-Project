@@ -1,12 +1,8 @@
-﻿  Admin.cpp
-  Admins.cpp
-E:\Abdelrahman\MMU\Year2\Sem1\TDS\Project\School-Management-System-Project\School-Management-System\School-Management-System\Admins.cpp(198,38): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-E:\Abdelrahman\MMU\Year2\Sem1\TDS\Project\School-Management-System-Project\School-Management-System\School-Management-System\Admins.cpp(204,75): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-E:\Abdelrahman\MMU\Year2\Sem1\TDS\Project\School-Management-System-Project\School-Management-System\School-Management-System\Admins.cpp(232,71): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-E:\Abdelrahman\MMU\Year2\Sem1\TDS\Project\School-Management-System-Project\School-Management-System\School-Management-System\Admins.cpp(247,75): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-E:\Abdelrahman\MMU\Year2\Sem1\TDS\Project\School-Management-System-Project\School-Management-System\School-Management-System\Admins.cpp(264,39): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-E:\Abdelrahman\MMU\Year2\Sem1\TDS\Project\School-Management-System-Project\School-Management-System\School-Management-System\Admins.cpp(336,20): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  Functions_Implementation.cpp
-  Main.cpp
-  Generating Code...
+﻿  Admins.cpp
+E:\Abdelrahman\MMU\Year2\Sem1\TDS\Project\School-Management-System-Project\School-Management-System\School-Management-System\Admins.cpp(246,38): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\Abdelrahman\MMU\Year2\Sem1\TDS\Project\School-Management-System-Project\School-Management-System\School-Management-System\Admins.cpp(252,75): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\Abdelrahman\MMU\Year2\Sem1\TDS\Project\School-Management-System-Project\School-Management-System\School-Management-System\Admins.cpp(285,75): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\Abdelrahman\MMU\Year2\Sem1\TDS\Project\School-Management-System-Project\School-Management-System\School-Management-System\Admins.cpp(300,75): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\Abdelrahman\MMU\Year2\Sem1\TDS\Project\School-Management-System-Project\School-Management-System\School-Management-System\Admins.cpp(317,39): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\Abdelrahman\MMU\Year2\Sem1\TDS\Project\School-Management-System-Project\School-Management-System\School-Management-System\Admins.cpp(390,20): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
   School-Management-System.vcxproj -> E:\Abdelrahman\MMU\Year2\Sem1\TDS\Project\School-Management-System-Project\School-Management-System\x64\Debug\School-Management-System.exe

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include <vector>
 #include "Admins.hpp"
 
@@ -161,24 +162,71 @@ int Admins::binary_search_by_username(vector<Admin>& admins, string username, in
 {
 	while (left <= right)
 	{
-		//Get the middle of the array
+		// Get the middle of the array
 		int middle = left + (right - left) / 2;
 
-		// Check if the name is present at the middle
-		if (admins.at(middle).username == username)
+		// Ensure middle is within the valid range
+		if (middle >= 0 && middle < admins.size())
 		{
-			return middle;
-		}
+			// Check if the name is present at the middle
+			if (admins.at(middle).username == username)
+			{
+				return middle;
+			}
 
-		// If the name is greater, ignore the left half
-		if (admins.at(middle).username < username)
-		{
-			left = middle + 1;
+			// If the name is greater, ignore the left half
+			if (admins.at(middle).username < username)
+			{
+				left = middle + 1;
+			}
+			// If the name is smaller, ignore the right half
+			else
+			{
+				right = middle - 1;
+			}
 		}
-		// If the name is smaller, ignore the right half
 		else
 		{
-			right = middle - 1;
+			// If middle is out of range, break the loop
+			break;
+		}
+	}
+
+	// Name not found
+	return -1;
+}
+
+int Admins::binary_search_by_id(vector<Admin>& admins, int id, int left, int right)
+{
+	while (left <= right)
+	{
+		// Get the middle of the array
+		int middle = left + (right - left) / 2;
+
+		// Ensure middle is within the valid range
+		if (middle >= 0 && middle < admins.size())
+		{
+			// Check if the name is present at the middle
+			if (admins.at(middle).id == id)
+			{
+				return middle;
+			}
+
+			// If the name is greater, ignore the left half
+			if (admins.at(middle).id < id)
+			{
+				left = middle + 1;
+			}
+			// If the name is smaller, ignore the right half
+			else
+			{
+				right = middle - 1;
+			}
+		}
+		else
+		{
+			// If middle is out of range, break the loop
+			break;
 		}
 	}
 
@@ -217,19 +265,24 @@ void Admins::remove_admin(string username)
 //display all the Admins
 void Admins::display_all_admins() const
 {
-	cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
-	cout << "ID" << "\t" << "Name" << "\t" << "Age" << "\t" << "Gender" << "\t" << "Phone Number" << "\t" << "Username" << endl;
-	cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
+	/*
+	* 'setw' stands for "Set Width." It defines the minimum space (width) a value will occupy when displayed.
+	* If the value is shorter than the specified width, extra spaces are added to the left.
+    * If the value is longer than the width, it is displayed fully
+	*/
+	cout << "---------------------------------------------------------------------------------------------------------------" << endl;
+	cout << setw(5) << "ID" << setw(15) << "Name" << setw(5) << "Age" << setw(10) << "Gender" << setw(15) << "Phone Number" << setw(15) << "Username" << endl;
+	cout << "---------------------------------------------------------------------------------------------------------------" << endl;
 	for (int i{ 0 }; i < admins.size(); i++)
 	{
-		cout << admins.at(i).id << "\t" << admins.at(i).name << "\t" << admins.at(i).age << "\t" << admins.at(i).gender << "\t" << admins.at(i).phone_number << "\t" << admins.at(i).username << endl;
+		cout << setw(5) << admins.at(i).id << setw(15) << admins.at(i).name << setw(5) << admins.at(i).age << setw(10) << admins.at(i).gender << setw(15) << admins.at(i).phone_number << setw(15) << admins.at(i).username << endl;
 	}
 }
 
 //display the information of a specific Admin using username
-void Admins::display_admin_info(string name)
+void Admins::display_admin_info(string username)
 {
-	int index = binary_search_by_username(admins, name, 0, admins.size() - 1);
+	int index = binary_search_by_username(admins, username, 0, admins.size() - 1);
 	if (index == -1)
 	{
 		cout << "The admin is not found!" << endl;
@@ -299,26 +352,27 @@ void Admins::save_admins()
 // Loads the information of all the Admins from a txt file.
 void Admins::load_admins()
 {
-	ifstream file;
-	file.open("admins.txt");
+	ifstream file("admins.txt");
 	if (file.is_open())
 	{
 		admins.clear();
 
-		while (!file.eof())
+		int id;
+		string name;
+		int age;
+		string gender;
+		int phone_number;
+		string username;
+		string password;
+
+		/*
+		This condition means that while the reading action from the file is correct and the variables
+		can read valid data, then --> condition is true
+		If the reading action stopped or it cannot read valid data, then --> condition is false
+		*/
+		while (file >> id >> name >> age >> gender >> phone_number >> username >> password)
 		{
-			int id;
-			string name;
-			int age;
-			string gender;
-			int phone_number;
-			string username;
-			string password;
-
-			file >> id >> name >> age >> gender >> phone_number >> username >> password;
-
 			Admin admin(id, name, age, gender, phone_number, username, password);
-
 			admins.push_back(admin);
 		}
 
