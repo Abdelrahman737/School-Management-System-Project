@@ -37,16 +37,6 @@ public:
 	// Returns the index of the admin if found, otherwise returns -1.
 	// left is the starting index, right is the ending index of the subarray to be searched
 	int binary_search_by_name(vector<Admin>& admins, string name, int left, int right);
-
-	// Performs binary search on the sorted vector of admins to find the admin with the given username.
-	// Returns the index of the admin if found, otherwise returns -1.
-	// left is the starting index, right is the ending index of the subarray to be searched
-	int binary_search_by_username(vector<Admin>& admins, string username, int left, int right);
-
-	// Performs binary search on the sorted vector of admins to find the admin with the given username.
-	// Returns the index of the admin if found, otherwise returns -1.
-	// left is the starting index, right is the ending index of the subarray to be searched
-	int binary_search_by_id(vector<Admin>& admins, int id, int left, int right);
 	
 	//display all the Admins
 	void display_all_admins() const;
@@ -55,7 +45,7 @@ public:
 	void display_admin_info(string username);
 
 	//edit the information of a specific Admin
-	void edit_admin_info(string username, int id, string name, int age, string gender, int phone_number, string new_username, string password);
+	void edit_admin_info(int id, string name, int age, string gender, int phone_number, string new_username, string password);
 
 	//save the information of all the Admins to a txt file
 	void save_admins();
@@ -65,8 +55,12 @@ public:
 
 	int get_length();
 
+	int get_id(const Admin& my_admin);
+
 	//Returns the password of the admin
 	string get_password(const Admin& my_Admin);
+
+	string get_username(const Admin& my_admin);
 
 	//Returns the password of the admin
 	string get_gender(const Admin& my_Admin);

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <iomanip>
 #include <string>
 #include "Students.hpp"
 #include "Student.hpp"
@@ -160,35 +161,6 @@ int Students::binary_search_by_name(vector<Student>& students, string name, int 
 	return -1;
 }
 
-int Students::binary_search_by_id(vector<Student>& students, int id, int left, int right)
-{
-	while (left <= right)
-	{
-		//Get the middle of the array
-		int middle = left + (right - left) / 2;
-
-		// Check if the name is present at the middle
-		if (students.at(middle).id == id)
-		{
-			return middle;
-		}
-
-		// If the name is greater, ignore the left half
-		if (students.at(middle).id < id)
-		{
-			left = middle + 1;
-		}
-		// If the name is smaller, ignore the right half
-		else
-		{
-			right = middle - 1;
-		}
-	}
-
-	// Name not found
-	return -1;
-}
-
 //===========================================Functions for the students=========================================
 
 //add a new student
@@ -218,14 +190,20 @@ void Students::display_student_info(string name)
 //Display the information of all the students
 void Students::display_all_students()
 {
-	cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
-	cout << "ID" << "\t" << "Name" << "\t" << "Age" << "\t" << "Gender" << "\t" << "Phone Number" << "\t" << "Grade" << "\t" << "Attandance precentage" << endl;
-	cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
+	/*
+	* 'setw' stands for "Set Width." It defines the minimum space (width) a value will occupy when displayed.
+	* If the value is shorter than the specified width, extra spaces are added to the left.
+	* If the value is longer than the width, it is displayed fully
+	*/
+	cout << "---------------------------------------------------------------------------------------------------------------------" << endl;
+	cout << left << setw(5) << "ID" << setw(20) << "Name" << setw(5) << "Age" << setw(10) << "Gender" << setw(15) << "Phone Number" << setw(10) << "Grade" << setw(20) << "Attendance %" << endl;
+	cout << "---------------------------------------------------------------------------------------------------------------------" << endl;
 	for (int i{ 0 }; i < students.size(); i++)
 	{
-		cout << students.at(i).id << "\t" << students.at(i).name << "\t" << students.at(i).age << "\t" << students.at(i).gender << "\t" << students.at(i).phone_number << "\t" << students.at(i).grade << "\t" << students.at(i).attendance_percentage << endl;
+		cout << left << setw(5) << students.at(i).id << setw(20) << students.at(i).name << setw(5) << students.at(i).age << setw(10) << students.at(i).gender << setw(15) << students.at(i).phone_number << setw(10) << students.at(i).grade << setw(20) << students.at(i).attendance_percentage << endl;
 	}
 }
+
 
 //remove a student
 void Students::remove_student(string name)
@@ -366,7 +344,6 @@ void Students::set_attendance_percentage(string name, float attendance_percentag
 	else
 	{
 		students.at(index).attendance_percentage = attendance_percentage;
-		cout << "The attendance percentage was set successfully!" << endl;
 	}
 }
 
@@ -387,6 +364,11 @@ void Students::set_marks(string name, vector<float> marks)
 int Students::get_length()
 {
 	return students.size();
+}
+
+int Students::get_id(Student my_student)
+{
+	return my_student.id;
 }
 
 vector<Student> Students::get_dataset()

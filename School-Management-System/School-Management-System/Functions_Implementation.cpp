@@ -44,14 +44,22 @@ void take_admin_info(int& id, string& name, string& password, string& username, 
 
 			id = stoi(id_str);
 
+			bool id_exists = false;
+
 			vector<Admin> dataset = admins.get_dataset();
 
-
-			int temp = admins.binary_search_by_id(dataset, id, 0, admins.get_length());
-
-			if (temp != -1)
+			for (Admin s : dataset)
 			{
-				throw invalid_argument("Invalid id, this id is already exists!");
+				if (admins.get_id(s) == id)
+				{
+					id_exists = true;
+					break;
+				}
+			}
+
+			if (id_exists)
+			{
+				throw invalid_argument("Invalid id, this id already exists!");
 			}
 
 			if (id <= 0)
@@ -141,20 +149,29 @@ void take_admin_info(int& id, string& name, string& password, string& username, 
 				}
 			}
 
+			bool username_exists = false;
+
 			vector<Admin> dataset = admins.get_dataset();
 
-			int temp = admins.binary_search_by_username(dataset, username, 0, admins.get_length());
-
-			if (temp != -1)
+			for (Admin s : dataset)
 			{
-				throw invalid_argument("Invalid username, this username is already exists!");
+				if (admins.get_username(s) == username)
+				{
+					username_exists = true;
+					break;
+				}
+			}
+
+			if (username_exists)
+			{
+				throw invalid_argument("Invalid username, this username already exists!");
 			}
 
 			break;
 		}
 		catch (invalid_argument r)
 		{
-			cout << r.what();
+			cout << r.what() << endl;
 		}
 
 	} while (true);
@@ -280,7 +297,7 @@ Admin add_new_admin()
 
 void delete_admin()
 {
-	string username;
+	string name;
 
 	system("cls");
 
@@ -320,15 +337,15 @@ void delete_admin()
 		try
 		{
 			cout << "Enter admin's username you want to delete: ";
-			cin >> username;
+			getline(cin, name);
 
 			vector<Admin> dataset = admins.get_dataset();
 
-			int temp = admins.binary_search_by_username(dataset, username, 0, admins.get_length());
+			int temp = admins.binary_search_by_name(dataset, name, 0, admins.get_length() - 1);
 
 			if (temp == -1)
 			{
-				throw invalid_argument("Invalid username, this username doesn't exist!");
+				throw invalid_argument("Invalid username, this name doesn't exist!");
 			}
 
 			break;
@@ -341,12 +358,12 @@ void delete_admin()
 
 	} while (true);
 
-	admins.remove_admin(username);
+	admins.remove_admin(name);
 }
 
 void edit_admin_info()
 {
-	string name, username, new_username, gender, password;
+	string name, username, gender, password;
 	int id = 0, age = 0, phone_number = 0;
 
 	system("cls");
@@ -385,16 +402,16 @@ void edit_admin_info()
 	{
 		try
 		{
-			cout << "Enter admin's username you want to edit: ";
-			getline(cin, username);
+			cout << "Enter admin's name you want to edit: ";
+			getline(cin, name);
 
 			vector<Admin> dataset = admins.get_dataset();
 
-			int temp = admins.binary_search_by_username(dataset, username, 0, admins.get_length());
+			int temp = admins.binary_search_by_name(dataset, name, 0, admins.get_length() - 1);
 
 			if (temp == -1)
 			{
-				throw invalid_argument("Invalid username, this username doesn't exist!");
+				throw invalid_argument("Invalid username, this name doesn't exist!");
 			}
 
 			break;
@@ -412,9 +429,9 @@ void edit_admin_info()
 	cout << "Enter new data" << endl;
 	cout << "=================" << endl;
 
-	take_admin_info(id, name, password, new_username, gender, age, phone_number);
+	take_admin_info(id, name, password, username, gender, age, phone_number);
 
-	admins.edit_admin_info(username, id, name, age, gender, phone_number, new_username, password);
+	admins.edit_admin_info(id, name, age, gender, phone_number, username, password);
 }
 
 void display_all_admins()
@@ -426,7 +443,7 @@ void display_all_admins()
 
 void display_admin_by_username()
 {
-	string username;
+	string name;
 
 	system("cls");
 
@@ -434,16 +451,16 @@ void display_admin_by_username()
 	{
 		try
 		{
-			cout << "Enter admin's username you want to delete: ";
-			cin >> username;
+			cout << "Enter admin's username you want to display: ";
+			getline(cin, name);
 
 			vector<Admin> dataset = admins.get_dataset();
 
-			int temp = admins.binary_search_by_username(dataset, username, 0, admins.get_length());
+			int temp = admins.binary_search_by_name(dataset, name, 0, admins.get_length() - 1);
 
 			if (temp == -1)
 			{
-				throw invalid_argument("Invalid username, this username doesn't exist!");
+				throw invalid_argument("Invalid username, this name doesn't exist!");
 			}
 
 			break;
@@ -455,7 +472,7 @@ void display_admin_by_username()
 
 	} while (true);
 
-	admins.display_admin_info(username);
+	admins.display_admin_info(name);
 }
 
 void admin_management()
@@ -572,12 +589,20 @@ void take_student_info(int& id, string& name, int& age, int& grade, string& gend
 			}
 
 			id = stoi(id_str);
+			bool id_exists = false;
 
 			vector<Student> dataset = students.get_dataset();
 
-			int temp = students.binary_search_by_id(dataset, id, 0, students.get_length());
+			for (Student s : dataset)
+			{
+				if (students.get_id(s) == id)
+				{
+					id_exists = true;
+					break;
+				}
+			}
 
-			if (temp != -1)
+			if (id_exists)
 			{
 				throw invalid_argument("Invalid id, this id already exists!");
 			}
@@ -609,10 +634,6 @@ void take_student_info(int& id, string& name, int& age, int& grade, string& gend
 				if (isdigit(c))
 				{
 					throw runtime_error("Invalid input, name should be a string only!");
-				}
-				else if (c == ' ')
-				{
-					throw runtime_error("Invalid input, name cannot include spaces!");
 				}
 			}
 			break;
@@ -778,7 +799,7 @@ void set_attendance_precentage()
 
 			vector<Student> dataset = students.get_dataset();
 
-			int temp = students.binary_search_by_name(dataset, name, 0, students.get_length());
+			int temp = students.binary_search_by_name(dataset, name, 0, students.get_length() - 1);
 
 			if (temp == -1)
 			{
@@ -839,7 +860,7 @@ void set_marks()
 
 	vector<Student> dataset = students.get_dataset();
 
-	int temp = students.binary_search_by_name(dataset, name, 0, students.get_length());
+	vector<Subject> subs;
 	
 	do
 	{
@@ -848,11 +869,14 @@ void set_marks()
 			cout << "Enter student's name: ";
 			getline(cin, name);
 
+			int temp = students.binary_search_by_name(dataset, name, 0, students.get_length() - 1);
 
 			if (temp == -1)
 			{
 				throw invalid_argument("Invalid name, this student doesn't exist!");
 			}
+
+			subs = students.get_subjects(dataset.at(temp));
 
 			break;
 		}
@@ -863,7 +887,6 @@ void set_marks()
 
 	} while (true);
 
-	vector<Subject> subs = students.get_subjects(dataset.at(temp));
 
 	cout << "Student subjects:" << endl;
 
@@ -924,7 +947,7 @@ void delete_student()
 
 	do
 	{
-		char ans;
+		char ans = ' ';
 
 		try
 		{
@@ -962,7 +985,7 @@ void delete_student()
 
 			vector<Student> dataset = students.get_dataset();
 
-			int temp = students.binary_search_by_name(dataset, name, 0, students.get_length());
+			int temp = students.binary_search_by_name(dataset, name, 0, students.get_length() - 1);
 
 			if (temp == -1)
 			{
@@ -1004,7 +1027,7 @@ void display_student_by_name()
 
 			vector<Student> dataset = students.get_dataset();
 
-			int temp = students.binary_search_by_name(dataset, name, 0, students.get_length());
+			int temp = students.binary_search_by_name(dataset, name, 0, students.get_length() - 1);
 
 			if (temp == -1)
 			{
@@ -1057,7 +1080,6 @@ void edit_student_info()
 		catch (invalid_argument r)
 		{
 			cout << r.what();
-			system("pause");
 		}
 	} while (true);
 
@@ -1066,12 +1088,11 @@ void edit_student_info()
 		try
 		{
 			cout << "Enter student's name you want to edit: ";
-			cin.ignore();
 			getline(cin, search_input);
 
 			vector<Student> dataset = students.get_dataset();
 
-			int temp = students.binary_search_by_name(dataset, search_input, 0, students.get_length());
+			int temp = students.binary_search_by_name(dataset, search_input, 0, students.get_length() - 1);
 
 			if (temp == -1)
 			{
@@ -1178,7 +1199,7 @@ void student_management()
 		}
 		case 4:
 		{
-			display_admin_by_username();
+			display_student_by_name();
 			system("pause");
 			break;
 		}
@@ -1246,19 +1267,32 @@ void menu()
 
 	cout << "Login:" << endl;
 
+	Admin temp;
+
 	do
 	{
 		try
 		{
 			cout << "Enter the username: ";
-			cin >> username;
+			getline(cin, username);
+
+			bool found = false;
 
 			vector<Admin> dataset = admins.get_dataset();
-			int temp = admins.binary_search_by_username(dataset, username, 0, admins.get_length());
-
-			if (temp == -1)
+			
+			for (Admin a : dataset)
 			{
-				throw invalid_argument("Invalid username");
+				if (admins.get_username(a) == username)
+				{
+					found = true;
+					temp = a;
+					break;
+				}
+			}
+
+			if (!found)
+			{
+				throw invalid_argument("Invalid username, username not found!");
 			}
 
 			break;
@@ -1276,7 +1310,7 @@ void menu()
 		try
 		{
 			cout << "Enter your password: ";
-			cin >> password;
+			getline(cin, password);
 
 			//Checking each character
 			if (password.length() < 8)
@@ -1285,16 +1319,10 @@ void menu()
 			}
 
 			vector<Admin> dataset = admins.get_dataset();
-			int temp = admins.binary_search_by_username(dataset, username, 0, admins.get_length());
 
-			if (temp == -1)
+			if (admins.get_password(temp) != password)
 			{
-				throw invalid_argument("Invalid password");
-			}
-
-			if (admins.get_password(dataset.at(temp)) != password)
-			{
-				throw invalid_argument("Invalid password");
+				throw invalid_argument("Invalid input, wrong password!");
 			}
 
 			break; //Exit the loop if input is valid
@@ -1313,9 +1341,7 @@ void menu()
 
 		vector<Admin> dataset = admins.get_dataset();
 
-		int temp = admins.binary_search_by_username(dataset, username, 0, admins.get_length());
-
-		if (admins.get_gender(dataset.at(temp)) == "male")
+		if (admins.get_gender(temp) == "male")
 		{
 			cout << "Welcome Mr. " << username << endl;
 		}
@@ -1367,6 +1393,7 @@ void menu()
 			admin_management();
 			break;
 		case 2:
+			students.load_students();
 			student_management();
 			break;
 		case 3:

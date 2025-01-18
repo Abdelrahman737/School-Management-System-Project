@@ -159,82 +159,6 @@ int Admins::binary_search_by_name(vector<Admin>& admins, string name, int left, 
 	return -1;
 }
 
-int Admins::binary_search_by_username(vector<Admin>& admins, string username, int left, int right)
-{
-	while (left <= right)
-	{
-		// Get the middle of the array
-		int middle = left + (right - left) / 2;
-
-		// Ensure middle is within the valid range
-		if (middle >= 0 && middle < admins.size())
-		{
-			// Check if the name is present at the middle
-			if (admins.at(middle).username == username)
-			{
-				return middle;
-			}
-
-			// If the name is greater, ignore the left half
-			if (admins.at(middle).username < username)
-			{
-				left = middle + 1;
-			}
-			// If the name is smaller, ignore the right half
-			else
-			{
-				right = middle - 1;
-			}
-		}
-		else
-		{
-			// If middle is out of range, break the loop
-			break;
-		}
-	}
-
-	// Name not found
-	return -1;
-}
-
-int Admins::binary_search_by_id(vector<Admin>& admins, int id, int left, int right)
-{
-	while (left <= right)
-	{
-		// Get the middle of the array
-		int middle = left + (right - left) / 2;
-
-		// Ensure middle is within the valid range
-		if (middle >= 0 && middle < admins.size())
-		{
-			// Check if the name is present at the middle
-			if (admins.at(middle).id == id)
-			{
-				return middle;
-			}
-
-			// If the name is greater, ignore the left half
-			if (admins.at(middle).id < id)
-			{
-				left = middle + 1;
-			}
-			// If the name is smaller, ignore the right half
-			else
-			{
-				right = middle - 1;
-			}
-		}
-		else
-		{
-			// If middle is out of range, break the loop
-			break;
-		}
-	}
-
-	// Name not found
-	return -1;
-}
-
 //===========================================Functions for the admins=========================================
 
 //add a new Admin
@@ -248,9 +172,9 @@ void Admins::add_admin(Admin my_admin)
 }
 
 //remove an Admin by username
-void Admins::remove_admin(string username)
+void Admins::remove_admin(string name)
 {
-	int index = binary_search_by_username(admins, username, 0, admins.size() - 1);
+	int index = binary_search_by_name(admins, name, 0, admins.size() - 1);
 	if (index == -1)
 	{
 		cout << "The admin is not found!" << endl;
@@ -281,9 +205,9 @@ void Admins::display_all_admins() const
 }
 
 //display the information of a specific Admin using username
-void Admins::display_admin_info(string username)
+void Admins::display_admin_info(string name)
 {
-	int index = binary_search_by_username(admins, username, 0, admins.size() - 1);
+	int index = binary_search_by_name(admins, name, 0, admins.size() - 1);
 	if (index == -1)
 	{
 		cout << "The admin is not found!" << endl;
@@ -296,9 +220,9 @@ void Admins::display_admin_info(string username)
 
 
 //Edit the information of a specific Admin using username
-void Admins::edit_admin_info(string username, int id, string name, int age, string gender, int phone_number, string new_username, string password)
+void Admins::edit_admin_info(int id, string name, int age, string gender, int phone_number, string new_username, string password)
 {
-	int index = binary_search_by_username(admins, username, 0, admins.size() - 1);
+	int index = binary_search_by_name(admins, name, 0, admins.size() - 1);
 	if (index == -1)
 	{
 		cout << "The admin is not found!" << endl;
@@ -406,6 +330,16 @@ string Admins::get_password(const Admin& my_Admin)
 string Admins::get_gender(const Admin & my_Admin)
 {
 	return my_Admin.gender;
+}
+
+int Admins::get_id(const Admin& my_admin)
+{
+	return my_admin.id;
+}
+
+string Admins::get_username(const Admin& my_admin)
+{
+	return my_admin.username;
 }
 
 vector<Admin> Admins::get_dataset()

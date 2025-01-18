@@ -56,11 +56,10 @@ public:
 
 	//Binary search function for the students by name
 	int binary_search_by_name(vector<Student>& students, string name, int left, int right);
-
-	//Binary search function for the students by id
-	int binary_search_by_id(vector<Student>& students, int id, int left, int right);
 	
 	int get_length();
+
+	int get_id(Student my_student);
 
 	vector<Student> get_dataset();
 
