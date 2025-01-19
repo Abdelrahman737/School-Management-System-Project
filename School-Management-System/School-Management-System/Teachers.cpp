@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <iomanip>
 #include <vector>
 #include "Teachers.hpp"
 #include "Subjects.hpp"
@@ -159,9 +161,9 @@ int Teachers::binary_search(vector<Teacher>& teachers, string name, int left, in
 //===========================================Functions for the teachers=========================================
 
 //add a new Teacher
-void Teachers::add_teacher(int id, string name, int age, string gender, int phone_number, string email, Subject subs[2], string date_of_joining, string qualification)
+void Teachers::add_teacher(Teacher my_teacher)
 {
-	Teacher teacher{ id, name, age, gender, phone_number, email, subs, date_of_joining, qualification };
+	Teacher teacher{my_teacher};
 
 	teachers.push_back(teacher);
 
@@ -187,12 +189,17 @@ void Teachers::remove_teacher(string name)
 //display all the Teachers
 void Teachers::display_all_teachers() const
 {
-	cout << "--------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
-	cout << "ID" << "\t" << "Name" << "\t" << "Age" << "\t" << "Gender" << "\t" << "Phone Number" << "\t" << "Email" << "\t" << "Date of Joining" << "\t" << "Qualification" << endl;
-	cout << "--------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
+	/*
+	* 'setw' stands for "Set Width." It defines the minimum space (width) a value will occupy when displayed.
+	* If the value is shorter than the specified width, extra spaces are added to the left.
+	* If the value is longer than the width, it is displayed fully
+	*/
+	cout << "---------------------------------------------------------------------------------------------------------------------" << endl;
+	cout << left << setw(5) << "ID" << setw(20) << "Name" << setw(5) << "Age" << setw(10) << "Gender" << setw(15) << "Phone Number" << setw(25) << "Email" << setw(20) << "Date of Joining" << setw(20) << "Qualification" << endl;
+	cout << "---------------------------------------------------------------------------------------------------------------------" << endl;
 	for (int i{ 0 }; i < teachers.size(); i++)
 	{
-		cout << teachers.at(i).id << "\t" << teachers.at(i).name << "\t" << teachers.at(i).age << "\t" << teachers.at(i).gender << "\t" << teachers.at(i).phone_number << "\t" << teachers.at(i).email << "\t" << teachers.at(i).date_of_joining << "\t" << teachers.at(i).qualification << endl;
+		cout << left << setw(5) << teachers.at(i).id << setw(20) << teachers.at(i).name << setw(5) << teachers.at(i).age << setw(10) << teachers.at(i).gender << setw(15) << teachers.at(i).phone_number << setw(25) << teachers.at(i).email << setw(20) << teachers.at(i).date_of_joining << setw(20) << teachers.at(i).qualification << endl;
 	}
 }
 
@@ -247,7 +254,7 @@ void Teachers::save_teachers()
 		for (int i{ 0 }; i < teachers.size(); i++)
 		{
 			file << teachers.at(i).id << " "
-				<< teachers.at(i).name << " "
+				<< teachers.at(i).name << ", "
 				<< teachers.at(i).age << " "
 				<< teachers.at(i).gender << " "
 				<< teachers.at(i).phone_number << " "
@@ -271,29 +278,26 @@ void Teachers::save_teachers()
 // Loads the information of all the Teachers from a txt file.
 void Teachers::load_teachers()
 {
-	ifstream file;
-	file.open("teachers.txt");
+	ifstream file("teachers.txt");
 	if (file.is_open())
 	{
 		teachers.clear();
 
-		while (!file.eof())
+		int id;
+		string name;
+		int age;
+		string gender;
+		int phone_number;
+		string email;
+		string sub1_name;
+		string sub2_name;
+		string date_of_joining;
+		string qualification;
+		Subject subs[2];
+		Subjects subjects;
+
+		while (file >> id >> ws && getline(file, name, ',') >> age >> gender >> phone_number >> email >> sub1_name >> sub2_name >> date_of_joining >> qualification)
 		{
-			int id;
-			string name;
-			int age;
-			string gender;
-			int phone_number;
-			string email;
-			string sub1_name;
-			string sub2_name;
-			Subject subs[2];
-			Subjects subjects;
-			string date_of_joining;
-			string qualification;
-
-			file >> id >> name >> age >> gender >> phone_number >> email >> sub1_name >> sub2_name >> date_of_joining >> qualification;
-
 			for (int i = 0; i < 2; i++)
 			{
 				string sub_name;
@@ -305,7 +309,7 @@ void Teachers::load_teachers()
 				{
 					sub_name = sub2_name;
 				}
-				for (const Subject subject : subjects.subjects)
+				for (const Subject& subject : subjects.subjects)
 				{
 					if (subject.name == sub_name)
 					{
@@ -316,16 +320,24 @@ void Teachers::load_teachers()
 			}
 
 			Teacher teacher(id, name, age, gender, phone_number, email, subs, date_of_joining, qualification);
-
 			teachers.push_back(teacher);
 		}
 
 		file.close();
-		cout << "Teachers information loaded successfully!" << endl;
-	}
-	else
-	{
-		cout << "The file could not be opened!" << endl;
 	}
 }
 
+vector<Teacher> Teachers::get_dataset()
+{
+	return teachers;
+}
+
+int Teachers::get_id(const Teacher& my_teacher)
+{
+	return my_teacher.id;
+}
+
+int Teachers::get_length()
+{
+	return teachers.size();
+}

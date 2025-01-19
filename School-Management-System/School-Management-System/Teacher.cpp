@@ -4,6 +4,12 @@
 
 using namespace std;
 
+//Default constructor
+Teacher::Teacher()
+{
+
+}
+
 //overloaded constructor
 Teacher::Teacher(int id, string name, int age, string gender, int phone_number, string email, Subject subs[], string date_of_joining, string qualification)
 	: Person(id, name, age, gender, phone_number), email(email), date_of_joining(date_of_joining), qualification(qualification)

@@ -23,6 +23,8 @@ public:
 	Subjects();
 	//destructor
 	~Subjects();
+	//Function
+	vector<Subject> get_all_subjects();
 };
 
 #endif

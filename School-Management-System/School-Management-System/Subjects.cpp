@@ -46,3 +46,9 @@ Subjects::~Subjects()
 {
 
 }
+
+//Function
+vector<Subject> Subjects::get_all_subjects()
+{
+	return subjects;
+}

@@ -17,6 +17,8 @@ Stack<Student> student_stack;
 Stack<Teacher> teacher_stack;
 Admins admins;
 Students students;
+Teachers teachers;
+Subjects subjects;
 
 //============================================Admin functions============================================
 void take_admin_info(int& id, string& name, string& password, string& username, string& gender, int& age, int& phone_number)
@@ -1046,7 +1048,6 @@ void display_student_by_name()
 	students.display_student_info(name);
 }
 
-
 void edit_student_info()
 {
 	string name, search_input, gender;
@@ -1238,10 +1239,625 @@ void student_management()
 
 //============================================Teachers functions============================================
 
+void take_teacher_info(int& id, string& name, int& age, string& gender, int& phone_number, string& email, Subject subs[2], string& date_of_joining, string& qualification)
+{
+	do
+	{
+		try
+		{
+			cout << "Enter ID: ";
+			string id_str;
+			getline(cin, id_str);
+
+			if (id_str.length() > 10)
+			{
+				throw invalid_argument("Invalid input, id must be less than 10 digits!");
+			}
+
+			for (char c : id_str)
+			{
+				if (!isdigit(c))
+				{
+					throw invalid_argument("Invalid input, id should include numbers only!");
+				}
+			}
+
+			id = stoi(id_str);
+			bool id_exists = false;
+
+			vector<Teacher> dataset = teachers.get_dataset();
+
+			for (Teacher t : dataset)
+			{
+				if (teachers.get_id(t) == id)
+				{
+					id_exists = true;
+					break;
+				}
+			}
+
+			if (id_exists)
+			{
+				throw invalid_argument("Invalid id, this id already exists!");
+			}
+
+			if (id <= 0)
+			{
+				throw invalid_argument("Invalid input, id should be a positive number!");
+			}
+
+			break; // Exit the loop if input is valid
+		}
+		catch (invalid_argument r) // Catches exception
+		{
+			// r.what() means that it will display the content of the error message
+			cout << r.what() << endl;
+		}
+
+	} while (true);
+
+	do
+	{
+		try
+		{
+			cout << "Enter teacher's name: ";
+			getline(cin, name);
+
+			for (char c : name)
+			{
+				if (isdigit(c))
+				{
+					throw runtime_error("Invalid input, name should be a string only!");
+				}
+			}
+			break;
+		}
+		catch (runtime_error r)
+		{
+			//r.what() means that it will display the content of the error message
+			cout << r.what() << endl;
+		}
+
+	} while (true);
+
+	do
+	{
+		try
+		{
+			cout << "Enter teacher's age: ";
+			string str_age;
+			getline(cin, str_age);
+
+			for (char c : str_age)
+			{
+				if (!isdigit(c))
+				{
+					throw invalid_argument("Invalid input, age should be a number only!");
+				}
+			}
+
+			age = stoi(str_age);
+
+			if (age <= 0)
+			{
+				throw invalid_argument("Invalid input, age should be a positive number!");
+			}
+
+			break; // Exit the loop if input is valid
+		}
+		catch (invalid_argument r) // Catches exception
+		{
+			// r.what() means that it will display the content of the error message
+			cout << r.what() << endl;
+		}
+
+	} while (true);
+
+	do
+	{
+		try
+		{
+			cout << "Gender(Male/Female): ";
+			getline(cin, gender);
+
+			string temp;
+
+			for (char c : gender)
+			{
+				if (isdigit(c))
+				{
+					throw invalid_argument("Invalid input, gender cannot contain any numbers!");
+				}
+				else
+				{
+					temp += tolower(c);
+				}
+			}
+
+			if (temp != "male" && temp != "female")
+			{
+				throw invalid_argument("Invalid input, must be (male/female)");
+			}
+
+			gender = temp;
+
+			break; //Exit the loop if input is valid
+		}
+		catch (invalid_argument r) //Catches exception
+		{
+			//r.what() means that it will display the content of the error message
+			cout << r.what() << endl;
+		}
+
+	} while (true);
+
+	do
+	{
+		try
+		{
+			cout << "Enter teacher's phone number(+60): ";
+			string str_phone_number;
+			getline(cin, str_phone_number);
+
+			for (char c : str_phone_number)
+			{
+				if (isalpha(c))
+				{
+					throw invalid_argument("Invalid input, phone number should contain digits only!");
+				}
+			}
+
+			phone_number = stoi(str_phone_number);
+
+			if (str_phone_number.length() != 9)
+			{
+				throw invalid_argument("Invalid input, phone number should contain 9 digits!");
+			}
+
+			break; // Exit the loop if input is valid
+		}
+		catch (invalid_argument r) // Catches exception
+		{
+			// r.what() means that it will display the content of the error message
+			cout << r.what() << endl;
+		}
+	} while (true);
+
+	do
+	{
+		try
+		{
+			cout << "Enter teacher's email: ";
+			getline(cin, email);
+
+			for (char c : email)
+			{
+				if (c == ' ')
+				{
+					throw invalid_argument("Invalid input, email cannot contain any spaces!");
+				}
+			}
+
+			char found1 = false;
+			char found2 = false;
+
+			for (char c : email)
+			{
+				if (c == '@')
+				{
+					found1 = true;
+				}
+				if (c == '.')
+				{
+					found2 = true;
+				}
+			}
+
+			if (!found1 && !found2)
+			{
+				throw invalid_argument("Invalid input, email must contail '@' and '.' !");
+			}
+
+			break;
+		}
+		catch (invalid_argument r)
+		{
+			// r.what() means that it will display the content of the error message
+			cout << r.what() << endl;
+		}
+	} while (true);
+
+	for (int i = 0; i < 2; i++)
+	{
+		string subject_name;
+		Subject subject;
+
+		system("cls");
+
+		//Displaying all subjects
+		vector<Subject> all_subjects = subjects.get_all_subjects();
+		cout << "Available subjects:" << endl;
+		for (int j = 0; j < all_subjects.size(); ++j)
+		{
+			cout << j + 1 << ") " << all_subjects[j].get_name() << endl;
+		}
+
+		do
+		{
+			try
+			{
+				cout << "Enter subject " << i + 1 << " name: ";
+				getline(cin, subject_name);
+
+				bool found = false;
+
+				for (Subject s : all_subjects)
+				{
+					if (s.get_name() == subject_name)
+					{
+						subject = s;
+						found = true;
+						break;
+					}
+				}
+
+				if (!found)
+				{
+					throw invalid_argument("Invalid input, subject not found!");
+				}
+
+				break;
+			}
+			catch (invalid_argument r)
+			{
+				// r.what() means that it will display the content of the error message
+				cout << r.what() << endl;
+			}
+		} while (true);
+
+		subs[i] = subject;
+	}
+
+	do
+	{
+		try
+		{
+			cout << "Enter date of joining (YYYY-MM-DD): ";
+			getline(cin, date_of_joining);
+
+			if (date_of_joining.length() != 10 || date_of_joining[4] != '-' || date_of_joining[7] != '-')
+			{
+				throw invalid_argument("Invalid input, date of joining must be in the format YYYY-MM-DD!");
+			}
+
+			break;
+		}
+		catch (invalid_argument r)
+		{
+			// r.what() means that it will display the content of the error message
+			cout << r.what() << endl;
+		}
+	} while (true);
+
+	do
+	{
+		try
+		{
+			cout << "Enter your qualification: ";
+			getline(cin, qualification);
+
+			for (char c : qualification)
+			{
+				if (isdigit(c))
+				{
+					throw invalid_argument("Invalid input, qualificaion must be a string only!");
+				}
+				if (c == ' ')
+				{
+					throw invalid_argument("Invalid input, qualification cannot contain any spaces!");
+				}
+			}
+
+			break;
+		}
+		catch (invalid_argument r)
+		{
+			// r.what() means that it will display the content of the error message
+			cout << r.what() << endl;
+		}
+	} while (true);
+}
+
+Teacher add_new_teacher()
+{
+	string name, gender, email, date_of_joining, qualification;
+	int id = 0, age = 0, phone_number = 0;
+	Subject subs[2];
+
+	system("cls");
+
+	take_teacher_info(id, name, age, gender, phone_number, email, subs, date_of_joining, qualification);
+
+	Teacher new_teacher{ id, name, age, gender, phone_number, email, subs, date_of_joining, qualification };
+
+	return new_teacher;
+}
+
+void delete_teacher()
+{
+	string name;
+
+	system("cls");
+
+	do
+	{
+		char ans;
+
+		try
+		{
+			cout << "Do you want to proceed(Y/N): ";
+			cin >> ans;
+
+			if (tolower(ans) != 'y' && tolower(ans) != 'n')
+			{
+				throw invalid_argument("Invalid input");
+			}
+
+			if (tolower(ans) == 'n')
+			{
+				return;
+			}
+			else
+			{
+				break;
+			}
+		}
+		catch (invalid_argument r)
+		{
+			cout << r.what() << endl;
+			system("pause");
+		}
+
+	} while (true);
+
+	do
+	{
+		try
+		{
+			cout << "Enter teacher's name you want to delete: ";
+			getline(cin, name);
+
+			vector<Teacher> dataset = teachers.get_dataset();
+
+			int temp = teachers.binary_search(dataset, name, 0, teachers.get_length() - 1);
+
+			if (temp == -1)
+			{
+				throw invalid_argument("Invalid name, this teacher doesn't exist!");
+			}
+
+			break;
+		}
+		catch (invalid_argument r)
+		{
+			cout << r.what() << endl;
+			system("pause");
+		}
+
+	} while (true);
+
+	teachers.remove_teacher(name);
+}
+
+void display_all_teachers()
+{
+	system("cls");
+
+	teachers.display_all_teachers();
+}
+
+void display_teacher_by_name()
+{
+	string name;
+
+	system("cls");
+
+	do
+	{
+		try
+		{
+			cout << "Enter teacher's name you want to display: ";
+			getline(cin, name);
+
+			vector<Teacher> dataset = teachers.get_dataset();
+
+			int temp = teachers.binary_search(dataset, name, 0, teachers.get_length() - 1);
+
+			if (temp == -1)
+			{
+				throw invalid_argument("Invalid name, this teacher doesn't exist!");
+			}
+
+			teachers.dispaly_teacher_info(name);
+			break;
+		}
+		catch (invalid_argument r)
+		{
+			cout << r.what() << endl;
+			system("pause");
+		}
+
+	} while (true);
+}
+
+void edit_teacher_info()
+{
+	string name, gender, email, date_of_joining, qualification;
+	int id = 0, age = 0, phone_number = 0;
+	Subject subs[2];
+
+	system("cls");
+
+	do
+	{
+		char ans;
+
+		try
+		{
+			cout << "Do you want to proceed(Y/N): ";
+			cin >> ans;
+
+			if (tolower(ans) != 'y' && tolower(ans) != 'n')
+			{
+				throw invalid_argument("Invalid input");
+			}
+
+			if (tolower(ans) == 'n')
+			{
+				return;
+			}
+			else
+			{
+				break;
+			}
+		}
+		catch (invalid_argument r)
+		{
+			cout << r.what();
+			system("pause");
+		}
+	} while (true);
+
+	do
+	{
+		try
+		{
+			cout << "Enter teacher's name you want to edit: ";
+			cin.ignore();
+			getline(cin, name);
+
+			vector<Teacher> dataset = teachers.get_dataset();
+
+			int temp = teachers.binary_search(dataset, name, 0, teachers.get_length() - 1);
+
+			if (temp == -1)
+			{
+				throw invalid_argument("Invalid name, this teacher doesn't exist!");
+			}
+
+			break;
+		}
+		catch (invalid_argument r)
+		{
+			cout << r.what() << endl;
+			system("pause");
+		}
+
+	} while (true);
+
+	system("cls");
+
+	cout << "Enter new data" << endl;
+	cout << "=================" << endl;
+
+	take_teacher_info(id, name, age, gender, phone_number, email, subs, date_of_joining, qualification);
+
+	teachers.edit_teacher_info(id, name, age, gender, phone_number, email, subs, date_of_joining, qualification);
+}
+
+
 void teacher_management()
 {
+	do
+	{
+		int choice = 0;
 
+		system("cls");
+		cout << "Teacher functions" << endl;
+		cout << "=================" << endl;
+		cout << "1) Add new teacher" << endl;
+		cout << "2) Delete teacher" << endl;
+		cout << "3) Edit teacher information" << endl;
+		cout << "4) Display teacher by name" << endl;
+		cout << "5) Display all teachers" << endl;
+		cout << "6) Remove last added teacher" << endl;
+		cout << "7) Save teachers" << endl;
+		cout << "8) Back" << endl;
+
+		try
+		{
+			cout << "Choose the desired option: ";
+			string str_choice;
+			getline(cin, str_choice);
+
+			for (char c : str_choice)
+			{
+				if (!isdigit(c))
+				{
+					throw invalid_argument("Invalid input, choice must be a number only");
+				}
+			}
+
+			choice = stoi(str_choice);
+
+			if (choice < 1 || choice > 8)
+			{
+				throw invalid_argument("Invalid input, choice must be between 1 and 8");
+			}
+		}
+		catch (invalid_argument r)
+		{
+			cout << r.what() << endl;
+			system("pause");
+		}
+
+		switch (choice)
+		{
+		case 1:
+			teacher_stack.push(add_new_teacher());
+			break;
+		case 2:
+		{
+			delete_teacher();
+			teachers.save_teachers();
+			break;
+		}
+		case 3:
+		{
+			edit_teacher_info();
+			teachers.save_teachers();
+			break;
+		}
+		case 4:
+		{
+			display_teacher_by_name();
+			system("pause");
+			break;
+		}
+		case 5:
+			display_all_teachers();
+			system("pause");
+			break;
+		case 6:
+			teacher_stack.pop();
+			break;
+		case 7:
+			for (int i = 0; i < teacher_stack.size(); i++)
+			{
+				Teacher temp;
+				teacher_stack.pop(temp);
+				teachers.add_teacher(temp);
+			}
+
+			teachers.save_teachers();
+			break;
+		case 8:
+			return;
+		}
+
+	} while (true);
 }
+
 
 //==================================================Menu======================================================
 
@@ -1384,7 +2000,8 @@ void menu()
 		}
 		catch (invalid_argument r)
 		{
-			cout << r.what();
+			cout << r.what() << endl;
+			system("pause");
 		}
 
 		switch (choice)
@@ -1397,13 +2014,14 @@ void menu()
 			student_management();
 			break;
 		case 3:
+			teachers.load_teachers();
 			teacher_management();
 			break;
 		case 4:
 			endl(cout);
 
 			cout << "Exiting system........" << endl;
-			cout << "Bye :)";
+			cout << "Bye :)" << endl;
 			exit(0); //exit will terminate the prgram
 		default:
 			cout << "Invalid input!";

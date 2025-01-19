@@ -19,6 +19,8 @@ private:
 	string date_of_joining;
 	string qualification;
 public:
+	//Default constructor
+	Teacher();
 	//overloaded constructor
 	Teacher(int id, string name, int age, string gender, int phone_number, string email, Subject subs[], string date_of_joining, string qualification);
 

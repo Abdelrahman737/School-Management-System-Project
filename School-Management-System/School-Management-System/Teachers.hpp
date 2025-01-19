@@ -22,7 +22,7 @@ public:
 	~Teachers();
 
 	//add a new teacher
-	void add_teacher(int id, string name, int age, string gender, int phone_number, string email, Subject subs[2], string date_of_joining, string qualification);
+	void add_teacher(Teacher my_teacher);
 
 	//remove a teacher
 	void remove_teacher(string name);
@@ -56,6 +56,12 @@ public:
 
 	//Loads the information of all the Admins from a txt file.
 	void load_teachers();
+
+	vector<Teacher> get_dataset();
+
+	int get_id(const Teacher& my_teacher);
+
+	int get_length();
 };
 
 #endif
