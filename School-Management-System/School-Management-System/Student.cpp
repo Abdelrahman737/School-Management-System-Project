@@ -61,10 +61,19 @@ void Student::display_info() const
 	cout << "Student Grade: " << grade << endl;
 	cout << "Student Attendance Percentage: " << attendance_percentage << endl;
 
+	cout << "====================================" << endl;
+
+	float marks_avg = 0;
+
 	for (int i{ 0 }; i < marks_per_subject.size(); i++)
 	{
-		cout << "Subject " << i + 1 << " Marks: " << marks_per_subject.at(i) << "%" << endl;
+		cout << subjects.at(i).name << " Marks: " << marks_per_subject.at(i) << " % " << endl;
+		marks_avg += marks_per_subject.at(i);
 	}
+
+	marks_avg = marks_avg / marks_per_subject.size();
+
+	cout << "Mraks average: " << marks_avg << " %" << endl;
 }
 
 //destructor

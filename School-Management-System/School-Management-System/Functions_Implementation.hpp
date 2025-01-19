@@ -13,7 +13,7 @@ void take_admin_info(int& id, string& name, string& password, string& username, 
 Admin add_new_admin();
 void delete_admin();
 void display_all_admins();
-void display_admin_by_username();
+void display_admin_by_name();
 void edit_admin_info();
 void admin_management();
 //===================================================Student=============================================

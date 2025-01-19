@@ -20,6 +20,7 @@ class Subject
     friend class Teacher;
     // Allow Student class to access the attributes of Subject class
     friend class Students;
+    friend class Student;
 private:
     string name;
     float credit_hours;

@@ -326,10 +326,6 @@ void Students::load_students()
 		file.close();
 		cout << "Students information loaded successfully!" << endl;
 	}
-	else
-	{
-		throw invalid_argument("File does not exist!");
-	}
 }
 
 

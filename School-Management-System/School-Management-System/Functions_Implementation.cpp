@@ -9,7 +9,6 @@
 #include "Subjects.hpp"
 #include "My_Stack.hpp"
 
-
 using namespace std;
 
 Stack<Admin> admin_stack;
@@ -20,7 +19,7 @@ Students students;
 Teachers teachers;
 Subjects subjects;
 
-//============================================Admin functions============================================
+//================================================Admin functions============================================
 void take_admin_info(int& id, string& name, string& password, string& username, string& gender, int& age, int& phone_number)
 {
 	do
@@ -305,19 +304,24 @@ void delete_admin()
 
 	do
 	{
-		char ans;
+		string ans;
 
 		try
 		{
 			cout << "Do you want to proceed(Y/N): ";
-			cin >> ans;
+			getline(cin, ans);
 
-			if (tolower(ans) != 'y' && tolower(ans) != 'n')
+			if (ans.length() > 1)
 			{
 				throw invalid_argument("Invalid input");
 			}
 
-			if (tolower(ans) == 'n')
+			if (tolower(ans[0]) != 'y' && tolower(ans[0]) != 'n')
+			{
+				throw invalid_argument("Invalid input");
+			}
+
+			if (tolower(ans[0]) == 'n')
 			{
 				return;
 			}
@@ -328,7 +332,7 @@ void delete_admin()
 		}
 		catch (invalid_argument r)
 		{
-			cout << r.what();
+			cout << r.what() << endl;
 			system("pause");
 		}
 
@@ -372,19 +376,24 @@ void edit_admin_info()
 
 	do
 	{
-		char ans;
+		string ans;
 
 		try
 		{
 			cout << "Do you want to proceed(Y/N): ";
-			cin >> ans;
+			getline(cin, ans);
 
-			if (tolower(ans) != 'y' && tolower(ans) != 'n')
+			if (ans.length() > 1)
 			{
 				throw invalid_argument("Invalid input");
 			}
 
-			if (tolower(ans) == 'n')
+			if (tolower(ans[0]) != 'y' && tolower(ans[0]) != 'n')
+			{
+				throw invalid_argument("Invalid input");
+			}
+
+			if (tolower(ans[0]) == 'n')
 			{
 				return;
 			}
@@ -395,9 +404,10 @@ void edit_admin_info()
 		}
 		catch (invalid_argument r)
 		{
-			cout << r.what();
+			cout << r.what() << endl;
 			system("pause");
 		}
+
 	} while (true);
 
 	do
@@ -448,6 +458,42 @@ void display_admin_by_username()
 	string name;
 
 	system("cls");
+
+	do
+	{
+		string ans;
+
+		try
+		{
+			cout << "Do you want to proceed(Y/N): ";
+			getline(cin, ans);
+
+			if (ans.length() > 1)
+			{
+				throw invalid_argument("Invalid input");
+			}
+
+			if (tolower(ans[0]) != 'y' && tolower(ans[0]) != 'n')
+			{
+				throw invalid_argument("Invalid input");
+			}
+
+			if (tolower(ans[0]) == 'n')
+			{
+				return;
+			}
+			else
+			{
+				break;
+			}
+		}
+		catch (invalid_argument r)
+		{
+			cout << r.what() << endl;
+			system("pause");
+		}
+
+	} while (true);
 
 	do
 	{
@@ -794,6 +840,42 @@ void set_attendance_precentage()
 
 	do
 	{
+		string ans;
+
+		try
+		{
+			cout << "Do you want to proceed(Y/N): ";
+			getline(cin, ans);
+
+			if (ans.length() > 1)
+			{
+				throw invalid_argument("Invalid input");
+			}
+
+			if (tolower(ans[0]) != 'y' && tolower(ans[0]) != 'n')
+			{
+				throw invalid_argument("Invalid input");
+			}
+
+			if (tolower(ans[0]) == 'n')
+			{
+				return;
+			}
+			else
+			{
+				break;
+			}
+		}
+		catch (invalid_argument r)
+		{
+			cout << r.what() << endl;
+			system("pause");
+		}
+
+	} while (true);
+
+	do
+	{
 		try
 		{
 			cout << "Enter student's name: ";
@@ -860,10 +942,47 @@ void set_marks()
 
 	system("cls");
 
+	do
+	{
+		string ans;
+
+		try
+		{
+			cout << "Do you want to proceed(Y/N): ";
+			getline(cin, ans);
+
+			if (ans.length() > 1)
+			{
+				throw invalid_argument("Invalid input");
+			}
+
+			if (tolower(ans[0]) != 'y' && tolower(ans[0]) != 'n')
+			{
+				throw invalid_argument("Invalid input");
+			}
+
+			if (tolower(ans[0]) == 'n')
+			{
+				return;
+			}
+			else
+			{
+				break;
+			}
+		}
+		catch (invalid_argument r)
+		{
+			cout << r.what() << endl;
+			system("pause");
+		}
+
+	} while (true);
+
+
 	vector<Student> dataset = students.get_dataset();
 
 	vector<Subject> subs;
-	
+
 	do
 	{
 		try
@@ -940,7 +1059,6 @@ void set_marks()
 	cout << "Marks set successfully!" << endl;
 }
 
-
 void delete_student()
 {
 	string name;
@@ -949,19 +1067,24 @@ void delete_student()
 
 	do
 	{
-		char ans = ' ';
+		string ans;
 
 		try
 		{
 			cout << "Do you want to proceed(Y/N): ";
-			getline(cin, name);
+			getline(cin, ans);
 
-			if (tolower(ans) != 'y' && tolower(ans) != 'n')
+			if (ans.length() > 1)
 			{
 				throw invalid_argument("Invalid input");
 			}
 
-			if (tolower(ans) == 'n')
+			if (tolower(ans[0]) != 'y' && tolower(ans[0]) != 'n')
+			{
+				throw invalid_argument("Invalid input");
+			}
+
+			if (tolower(ans[0]) == 'n')
 			{
 				return;
 			}
@@ -972,7 +1095,7 @@ void delete_student()
 		}
 		catch (invalid_argument r)
 		{
-			cout << r.what();
+			cout << r.what() << endl;
 			system("pause");
 		}
 
@@ -1022,6 +1145,42 @@ void display_student_by_name()
 
 	do
 	{
+		string ans;
+
+		try
+		{
+			cout << "Do you want to proceed(Y/N): ";
+			getline(cin, ans);
+
+			if (ans.length() > 1)
+			{
+				throw invalid_argument("Invalid input");
+			}
+
+			if (tolower(ans[0]) != 'y' && tolower(ans[0]) != 'n')
+			{
+				throw invalid_argument("Invalid input");
+			}
+
+			if (tolower(ans[0]) == 'n')
+			{
+				return;
+			}
+			else
+			{
+				break;
+			}
+		}
+		catch (invalid_argument r)
+		{
+			cout << r.what() << endl;
+			system("pause");
+		}
+
+	} while (true);
+
+	do
+	{
 		try
 		{
 			cout << "Enter student's name you want to display: ";
@@ -1057,19 +1216,24 @@ void edit_student_info()
 
 	do
 	{
-		char ans;
+		string ans;
 
 		try
 		{
 			cout << "Do you want to proceed(Y/N): ";
-			cin >> ans;
+			getline(cin, ans);
 
-			if (tolower(ans) != 'y' && tolower(ans) != 'n')
+			if (ans.length() > 1)
 			{
 				throw invalid_argument("Invalid input");
 			}
 
-			if (tolower(ans) == 'n')
+			if (tolower(ans[0]) != 'y' && tolower(ans[0]) != 'n')
+			{
+				throw invalid_argument("Invalid input");
+			}
+
+			if (tolower(ans[0]) == 'n')
 			{
 				return;
 			}
@@ -1080,8 +1244,10 @@ void edit_student_info()
 		}
 		catch (invalid_argument r)
 		{
-			cout << r.what();
+			cout << r.what() << endl;
+			system("pause");
 		}
+
 	} while (true);
 
 	do
@@ -1453,7 +1619,7 @@ void take_teacher_info(int& id, string& name, int& age, string& gender, int& pho
 				}
 			}
 
-			if (!found1 && !found2)
+			if (!found1 || !found2)
 			{
 				throw invalid_argument("Invalid input, email must contail '@' and '.' !");
 			}
@@ -1467,21 +1633,49 @@ void take_teacher_info(int& id, string& name, int& age, string& gender, int& pho
 		}
 	} while (true);
 
-	for (int i = 0; i < 2; i++)
+	string subject_name;
+	int subs_count = 0;
+	Subject subject;
+
+	system("cls");
+
+	do
 	{
-		string subject_name;
-		Subject subject;
-
-		system("cls");
-
-		//Displaying all subjects
-		vector<Subject> all_subjects = subjects.get_all_subjects();
-		cout << "Available subjects:" << endl;
-		for (int j = 0; j < all_subjects.size(); ++j)
+		try
 		{
-			cout << j + 1 << ") " << all_subjects[j].get_name() << endl;
-		}
+			cout << "How many subject the teacher will take (1/2): ";
+			string str_sub;
+			getline(cin, str_sub);
 
+			if (str_sub.length() > 1)
+			{
+				throw invalid_argument("Invalid input");
+			}
+			else if (!isdigit(str_sub[0]))
+			{
+				throw invalid_argument("Invalid input");
+			}
+
+			subs_count = stoi(str_sub);
+
+			break;
+		}
+		catch (invalid_argument r)
+		{
+			cout << r.what() << endl;
+		}
+	} while (true);
+
+	//Displaying all subjects
+	vector<Subject> all_subjects = subjects.get_all_subjects();
+	cout << "Available subjects:" << endl;
+	for (int j = 0; j < all_subjects.size(); j++)
+	{
+		cout << j + 1 << ") " << all_subjects[j].get_name() << endl;
+	}
+
+	for (int i = 0; i < subs_count; i++)
+	{
 		do
 		{
 			try
@@ -1591,19 +1785,24 @@ void delete_teacher()
 
 	do
 	{
-		char ans;
+		string ans;
 
 		try
 		{
 			cout << "Do you want to proceed(Y/N): ";
-			cin >> ans;
+			getline(cin, ans);
 
-			if (tolower(ans) != 'y' && tolower(ans) != 'n')
+			if (ans.length() > 1)
 			{
 				throw invalid_argument("Invalid input");
 			}
 
-			if (tolower(ans) == 'n')
+			if (tolower(ans[0]) != 'y' && tolower(ans[0]) != 'n')
+			{
+				throw invalid_argument("Invalid input");
+			}
+
+			if (tolower(ans[0]) == 'n')
 			{
 				return;
 			}
@@ -1664,6 +1863,42 @@ void display_teacher_by_name()
 
 	do
 	{
+		string ans;
+
+		try
+		{
+			cout << "Do you want to proceed(Y/N): ";
+			getline(cin, ans);
+
+			if (ans.length() > 1)
+			{
+				throw invalid_argument("Invalid input");
+			}
+
+			if (tolower(ans[0]) != 'y' && tolower(ans[0]) != 'n')
+			{
+				throw invalid_argument("Invalid input");
+			}
+
+			if (tolower(ans[0]) == 'n')
+			{
+				return;
+			}
+			else
+			{
+				break;
+			}
+		}
+		catch (invalid_argument r)
+		{
+			cout << r.what() << endl;
+			system("pause");
+		}
+
+	} while (true);
+
+	do
+	{
 		try
 		{
 			cout << "Enter teacher's name you want to display: ";
@@ -1700,19 +1935,24 @@ void edit_teacher_info()
 
 	do
 	{
-		char ans;
+		string ans;
 
 		try
 		{
 			cout << "Do you want to proceed(Y/N): ";
-			cin >> ans;
+			getline(cin, ans);
 
-			if (tolower(ans) != 'y' && tolower(ans) != 'n')
+			if (ans.length() > 1)
 			{
 				throw invalid_argument("Invalid input");
 			}
 
-			if (tolower(ans) == 'n')
+			if (tolower(ans[0]) != 'y' && tolower(ans[0]) != 'n')
+			{
+				throw invalid_argument("Invalid input");
+			}
+
+			if (tolower(ans[0]) == 'n')
 			{
 				return;
 			}
@@ -1723,9 +1963,10 @@ void edit_teacher_info()
 		}
 		catch (invalid_argument r)
 		{
-			cout << r.what();
+			cout << r.what() << endl;
 			system("pause");
 		}
+
 	} while (true);
 
 	do
@@ -1895,7 +2136,7 @@ void menu()
 			bool found = false;
 
 			vector<Admin> dataset = admins.get_dataset();
-			
+
 			for (Admin a : dataset)
 			{
 				if (admins.get_username(a) == username)
